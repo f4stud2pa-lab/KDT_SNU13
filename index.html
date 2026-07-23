@@ -1,28 +1,154 @@
-{\rtf1\ansi\ansicpg949\cocoartf2870
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
-{\colortbl;\red255\green255\blue255;\red109\green109\blue109;\red255\green255\blue254;\red251\green0\blue7;
-\red0\green0\blue0;\red42\green42\blue42;\red107\green0\blue1;\red0\green0\blue255;}
-{\*\expandedcolortbl;;\cssrgb\c50196\c50196\c50196;\cssrgb\c100000\c100000\c99608;\cssrgb\c100000\c0\c0;
-\cssrgb\c0\c0\c0;\cssrgb\c21961\c21961\c21961;\cssrgb\c50196\c0\c0;\cssrgb\c0\c0\c100000;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\deftab720
-\pard\pardeftab720\partightenfactor0
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>정의진 - 포트폴리오</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-zinc-800 antialiased selection:bg-indigo-500 selection:text-white">
 
-\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 <!doctype\cf4 \strokec4  html\cf2 \strokec2 >\cf0 \cb1 \strokec5 \
-\pard\pardeftab720\partightenfactor0
-\cf6 \cb3 \strokec6 <\cf7 \strokec7 html\cf0 \strokec5  \cf4 \strokec4 lang\cf6 \strokec6 =\cf8 \strokec8 "en"\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\pard\pardeftab720\partightenfactor0
-\cf0 \cb3   \cf6 \strokec6 <\cf7 \strokec7 head\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\cb3     \cf6 \strokec6 <\cf7 \strokec7 meta\cf0 \strokec5  \cf4 \strokec4 charset\cf6 \strokec6 =\cf8 \strokec8 "UTF-8"\cf0 \strokec5  \cf6 \strokec6 />\cf0 \cb1 \strokec5 \
-\cb3     \cf6 \strokec6 <\cf7 \strokec7 meta\cf0 \strokec5  \cf4 \strokec4 name\cf6 \strokec6 =\cf8 \strokec8 "viewport"\cf0 \strokec5  \cf4 \strokec4 content\cf6 \strokec6 =\cf8 \strokec8 "width=device-width, initial-scale=1.0"\cf0 \strokec5  \cf6 \strokec6 />\cf0 \cb1 \strokec5 \
-\cb3     \cf6 \strokec6 <\cf7 \strokec7 title\cf6 \strokec6 >\cf0 \strokec5 My Google AI Studio App\cf6 \strokec6 </\cf7 \strokec7 title\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\cb3   \cf6 \strokec6 </\cf7 \strokec7 head\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\cb3   \cf6 \strokec6 <\cf7 \strokec7 body\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\cb3     \cf6 \strokec6 <\cf7 \strokec7 div\cf0 \strokec5  \cf4 \strokec4 id\cf6 \strokec6 =\cf8 \strokec8 "root"\cf6 \strokec6 ></\cf7 \strokec7 div\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\cb3     \cf6 \strokec6 <\cf7 \strokec7 script\cf0 \strokec5  \cf4 \strokec4 type\cf6 \strokec6 =\cf8 \strokec8 "module"\cf0 \strokec5  \cf4 \strokec4 src\cf6 \strokec6 =\cf8 \strokec8 "/src/main.tsx"\cf6 \strokec6 ></\cf7 \strokec7 script\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\cb3   \cf6 \strokec6 </\cf7 \strokec7 body\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\pard\pardeftab720\partightenfactor0
-\cf6 \cb3 \strokec6 </\cf7 \strokec7 html\cf6 \strokec6 >\cf0 \cb1 \strokec5 \
-\
-}
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-zinc-200">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <span class="font-bold text-zinc-900">정의진</span>
+      <nav class="flex gap-6 text-sm font-medium text-zinc-600">
+        <a href="#interests" class="hover:text-indigo-600">관심사</a>
+        <a href="#projects" class="hover:text-indigo-600">프로젝트</a>
+        <a href="#skills" class="hover:text-indigo-600">스킬</a>
+        <a href="#contact" class="hover:text-indigo-600">연락처</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-12 space-y-16">
+    <!-- Hero -->
+    <section id="hero" class="space-y-6 border-b border-zinc-100 pb-12">
+      <span class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full border border-emerald-200">구직 중 / 새로운 프로젝트 탐색 중</span>
+      <div class="flex items-center justify-between gap-6">
+        <div>
+          <h1 class="text-4xl sm:text-5xl font-extrabold text-zinc-900">정의진 <span class="text-indigo-600 text-2xl font-semibold">데이터 분석가</span></h1>
+          <p class="text-2xl font-medium text-zinc-800 mt-3">"사용자 경험과 깔끔한 코드 가치를 지향하는 개발자입니다."</p>
+          <p class="text-zinc-600 mt-2">새로운 기술을 배우고 문제를 해결하는 과정을 즐깁니다. 직관적이고 반응이 빠른 웹 애플리케이션 구축에 열정을 가지고 있습니다.</p>
+        </div>
+        <div class="text-6xl p-4 bg-indigo-50 rounded-2xl shrink-0">💻</div>
+      </div>
+      <div class="flex gap-3 pt-4">
+        <a href="mailto:f4stud2pa@gmail.com" class="px-4 py-2 bg-zinc-900 text-white rounded-xl text-sm font-medium hover:bg-zinc-800">이메일 보내기</a>
+        <a href="https://github.com/f4stud2pa-lab" target="_blank" class="px-4 py-2 bg-zinc-100 text-zinc-800 rounded-xl text-sm font-medium border border-zinc-200 hover:bg-zinc-200">GitHub 방문</a>
+      </div>
+    </section>
+
+    <!-- Interests -->
+    <section id="interests">
+      <h2 class="text-2xl font-bold mb-6">주요 관심사</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+          <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-200">
+            <h3 class="font-bold text-zinc-900 text-base mb-1">웹 성능 최적화</h3>
+            <p class="text-zinc-600 text-sm">Lighthouse 점수 향상, 번들 크기 축소 및 빠른 로딩 UX 설계</p>
+          </div>
+        
+          <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-200">
+            <h3 class="font-bold text-zinc-900 text-base mb-1">UI/UX 디자인 시스템</h3>
+            <p class="text-zinc-600 text-sm">일관성 있고 재사용 가능한 컴포넌트 라이브러리 및 디자인 체계</p>
+          </div>
+        
+          <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-200">
+            <h3 class="font-bold text-zinc-900 text-base mb-1">인공지능 & 프롬프트 엔지니어링</h3>
+            <p class="text-zinc-600 text-sm">AI API 및 LLM을 활용한 스마트 자동화 도구 개발</p>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <h2 class="text-2xl font-bold mb-6">프로젝트</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+          <div class="p-6 rounded-2xl bg-white border border-zinc-200 shadow-xs flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">대표 프로젝트</span>
+              <h3 class="text-lg font-bold text-zinc-900 mt-2 mb-2">실시간 협업 메모 서비스 (NoteFlow)</h3>
+              <p class="text-zinc-600 text-sm mb-4">웹소켓 기반의 실시간 공동 편집 기능과 깔끔한 마크다운 에디터를 제공하는 동시성 메모 앱입니다.</p>
+              <div class="flex flex-wrap gap-1 mb-4">
+                <span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">React</span><span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">TypeScript</span><span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">Tailwind CSS</span><span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">Node.js</span>
+              </div>
+            </div>
+            <div class="flex gap-2 pt-4 border-t border-zinc-100">
+              <a href="https://example.com/noteflow" target="_blank" class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium">웹사이트 보기</a>
+              <a href="https://github.com/username/noteflow" target="_blank" class="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-xs font-medium">GitHub</a>
+            </div>
+          </div>
+        
+          <div class="p-6 rounded-2xl bg-white border border-zinc-200 shadow-xs flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">사이 드프로젝트</span>
+              <h3 class="text-lg font-bold text-zinc-900 mt-2 mb-2">AI 기반 스마트 일정 관리자 (TaskGenie)</h3>
+              <p class="text-zinc-600 text-sm mb-4">자연어 명령으로 일정을 자동 분주하고 우선순위를 추천해주는 개인 생산성 대시보드입니다.</p>
+              <div class="flex flex-wrap gap-1 mb-4">
+                <span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">React</span><span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">Gemini API</span><span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">Tailwind CSS</span><span class="px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded text-xs">Vite</span>
+              </div>
+            </div>
+            <div class="flex gap-2 pt-4 border-t border-zinc-100">
+              <a href="https://example.com/taskgenie" target="_blank" class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium">웹사이트 보기</a>
+              <a href="https://github.com/username/taskgenie" target="_blank" class="px-3 py-1.5 bg-zinc-100 text-zinc-700 rounded-lg text-xs font-medium">GitHub</a>
+            </div>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <h2 class="text-2xl font-bold mb-6">스킬 뱃지</h2>
+      <div class="space-y-4">
+        
+          <div class="p-4 rounded-2xl bg-zinc-50 border border-zinc-200">
+            <h3 class="text-xs font-bold uppercase text-zinc-500 mb-2">Frontend</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">React</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">TypeScript</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">JavaScript (ES6+)</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">Tailwind CSS</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">HTML5/CSS3</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">Vite</span>
+            </div>
+          </div>
+        
+          <div class="p-4 rounded-2xl bg-zinc-50 border border-zinc-200">
+            <h3 class="text-xs font-bold uppercase text-zinc-500 mb-2">Tools & Version Control</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">Git / GitHub</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">VS Code</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">Figma</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">Vercel / Cloud Run</span>
+            </div>
+          </div>
+        
+          <div class="p-4 rounded-2xl bg-zinc-50 border border-zinc-200">
+            <h3 class="text-xs font-bold uppercase text-zinc-500 mb-2">Soft Skills & Interests</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">애자일 협업</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">문제 해결 능력</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">지속적인 학습</span><span class="px-3 py-1 bg-white text-zinc-800 rounded-lg text-xs font-medium border border-zinc-200">문서화</span>
+            </div>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="p-8 rounded-3xl bg-zinc-900 text-white flex flex-col sm:flex-row justify-between items-center gap-6">
+      <div>
+        <h2 class="text-2xl font-bold">Contact</h2>
+        <p class="text-zinc-400 text-sm mt-1">이메일: f4stud2pa@gmail.com</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="mailto:f4stud2pa@gmail.com" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold">이메일 문의</a>
+        <a href="https://github.com/f4stud2pa-lab" target="_blank" class="px-4 py-2 bg-white/10 text-white rounded-xl text-xs font-bold">GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center py-8 text-xs text-zinc-400 border-t border-zinc-100">
+    © 2026 정의진. All rights reserved.
+  </footer>
+</body>
+</html>
