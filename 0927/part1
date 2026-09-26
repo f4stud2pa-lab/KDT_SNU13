@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""실습 제출 경로용 실행 진입점.
+
+실제 구현은 같은 폴더의 part1.py에 있습니다.
+"""
+
+from pathlib import Path
+import runpy
+
+
+runpy.run_path(str(Path(__file__).with_name("part1.py")), run_name="__main__")
