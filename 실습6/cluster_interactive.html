@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>논문 유사도 기반 군집화 인터랙티브 리포트</title>
+  <style>
+    :root {
+      --bg-color: #0F172A;
+      --card-bg: #1E293B;
+      --card-border: #334155;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --accent: #38BDF8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      padding: 24px;
+      line-height: 1.5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #38BDF8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .stat-title { font-size: 13px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+    .stat-value { font-size: 22px; font-weight: 700; color: #F1F5F9; margin-top: 6px; }
+    .grid-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 1024px) {
+      .grid-container { grid-template-columns: 1fr; }
+    }
+    .chart-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .tab-group {
+      display: flex;
+      background: #0F172A;
+      border-radius: 8px;
+      padding: 4px;
+      gap: 4px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #38BDF8;
+      color: #0F172A;
+    }
+    #canvas-container {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      background: #090D16;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: grab;
+    }
+    #canvas-container:active { cursor: grabbing; }
+    canvas { width: 100%; height: 100%; display: block; }
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .cluster-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .cluster-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #FFF;
+    }
+    .kw-tag {
+      display: inline-block;
+      background: #334155;
+      color: #CBD5E1;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin: 2px 4px 2px 0;
+    }
+    .paper-list-item {
+      background: #0F172A;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .paper-list-item:hover {
+      border-color: #38BDF8;
+    }
+    .paper-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #F8FAFC;
+    }
+    .paper-item-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .tooltip {
+      position: absolute;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #38BDF8;
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #F8FAFC;
+      font-size: 12px;
+      pointer-events: none;
+      display: none;
+      max-width: 320px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .tooltip-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: #38BDF8; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>📚 논문 유사도 기반 의미론적 군집화 (Semantic Paper Clustering)</h1>
+      <p>PDF 텍스트 추출 & 벡터 임베딩 & K-Means 군집화 & PCA 2D/3D 차원 축소 결과 대시보드</p>
+    </div>
+  </div>
+
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-card">
+      <div class="stat-title">총 분석 논문</div>
+      <div class="stat-value">10 편</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">군집(Clusters) 개수 K</div>
+      <div class="stat-value">4 개</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">임베딩 차원 축소</div>
+      <div class="stat-value">PCA (2D / 3D)</div>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <!-- 좌측: 인터랙티브 차트 -->
+    <div class="chart-panel">
+      <div class="panel-header">
+        <h2 style="font-size: 16px; font-weight: 600;">차원 축소 산점도 (Scatter Plot)</h2>
+        <div class="tab-group">
+          <button class="tab-btn active" id="btn-2d" onclick="switchDim('2d')">2D 평면 투영</button>
+          <button class="tab-btn" id="btn-3d" onclick="switchDim('3d')">3D 공간 회전</button>
+        </div>
+      </div>
+      <div id="canvas-container">
+        <canvas id="clusterCanvas"></canvas>
+        <div id="tooltip" class="tooltip"></div>
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: 10px; display: flex; justify-content: space-between;">
+        <span>💡 포인트에 마우스를 올리면 논문 상세 정보를 확인하실 수 있습니다.</span>
+        <span id="control-hint">3D 모드: 마우스 드래그로 회전 가능</span>
+      </div>
+    </div>
+
+    <!-- 우측: 클러스터 요약 및 논문 목록 -->
+    <div class="side-panel" id="side-panel"></div>
+  </div>
+
+  <script>
+    const papers = [{"id": 0, "filename": "AI_01_Transformer_Language_Models.pdf", "title": "Attention Mechanisms and Transformer Architectures for", "authors": "Alex Vaswani, Elena Cho, David Silver", "journal": "Journal of Machine Learning & Neural Information Processing (2024)", "category": "AI / Deep Learning", "abstract": "This paper investigates self-attention mechanisms and multi-head attention layers in Transformer neural networks. We demonstrate how feedforward networks and positional encodings enable parallel processing of sequential text data. Our experimental results on large-scale natural language processing benchmarks indicate superior BLEU scores and faster training convergence compared to traditional recurrent neural networks. Furthermore, scaling laws indicate continuous performance improvements with larger parameter sizes.", "keywords": "Transformer, Self-Attention, Natural Language Processing, Deep Learning, Neural Networks", "cluster_id": 0, "color": "#4361EE", "x2d": -0.2531, "y2d": 0.5286, "x3d": -0.2531, "y3d": 0.5286, "z3d": -0.065}, {"id": 1, "filename": "AI_02_Computer_Vision_Residual_Networks.pdf", "title": "Deep Residual Learning and Convolutional Neural", "authors": "Kaiming He, Xiangyu Zhang, Shaoqing Ren", "journal": "IEEE Transactions on Pattern Analysis and Machine Intelligence (2024)", "category": "AI / Deep Learning", "abstract": "Deeper convolutional neural networks are notoriously difficult to train due to vanishing and exploding gradient problems. We present a deep residual learning framework where layers explicitly learn residual mapping with reference to layer inputs. On the ImageNet dataset, deep residual networks achieve state-of-the-art image classification accuracy, confirming that identity skip connections facilitate gradient propagation throughout ultra-deep architectures.", "keywords": "Deep Learning, Convolutional Neural Networks, Residual Networks, Computer Vision, Image Classification", "cluster_id": 0, "color": "#4361EE", "x2d": -0.2982, "y2d": 0.5073, "x3d": -0.2982, "y3d": 0.5073, "z3d": -0.0531}, {"id": 2, "filename": "AI_03_Reinforcement_Learning_Human_Feedback.pdf", "title": "Aligning Large Language Models with Reinforcement", "authors": "Paul Christiano, Jan Leike, John Schulman", "journal": "Conference on Neural Information Processing Systems (NeurIPS 2024)", "category": "AI / Deep Learning", "abstract": "Large language models can produce untruthful, toxic, or misaligned outputs when trained solely on unsupervised next-token prediction objectives. We apply Reinforcement Learning from Human Feedback (RLHF) using proximal policy optimization (PPO) and reward modeling. Fine-tuning foundation models with human preference rankings significantly improves safety, truthfulness, and conversational helpfulness.", "keywords": "Reinforcement Learning, RLHF, Large Language Models, Alignment, Prompt Engineering", "cluster_id": 0, "color": "#4361EE", "x2d": -0.1789, "y2d": 0.1898, "x3d": -0.1789, "y3d": 0.1898, "z3d": -0.0881}, {"id": 3, "filename": "Bio_01_CRISPR_Cas9_Gene_Editing.pdf", "title": "Precision Genome Editing with CRISPR-Cas9: Therapeutic", "authors": "Jennifer Doudna, Emmanuelle Charpentier, Feng Zhang", "journal": "New England Journal of Medicine & Cell Biology (2024)", "category": "Biomedical / Genomics", "abstract": "The CRISPR-Cas9 bacterial endonuclease system has transformed targeted genomic engineering in biomedical research. We characterize high-fidelity Cas9 variants engineered to eliminate non-specific off-target double-strand breaks. In vivo preclinical trials demonstrate efficient correction of monogenic disease mutations in human hematopoietic stem cells without detectable chromosomal translocations or oncogenic mutations.", "keywords": "CRISPR-Cas9, Gene Editing, Genomics, Molecular Therapeutics, Genetic Diseases", "cluster_id": 1, "color": "#E63946", "x2d": -0.2269, "y2d": -0.4457, "x3d": -0.2269, "y3d": -0.4457, "z3d": -0.3827}, {"id": 4, "filename": "Bio_02_Single_Cell_RNA_Cancer_Immunology.pdf", "title": "Single-Cell RNA Sequencing Reveals Tumor", "authors": "Aviv Regev, Carl June, James Allison", "journal": "Cancer Cell & Molecular Immunology (2024)", "category": "Biomedical / Genomics", "abstract": "Tumor cellular heterogeneity and immune evasion mechanisms pose major obstacles to immune checkpoint blockade therapies. We perform high-throughput single-cell RNA sequencing (scRNA-seq) on patient tumor biopsies across multiple solid tumor cohorts. Transcriptomic profiling identifies distinct exhausted CD8+ T-cell subsets and immunosuppressive tumor-associated macrophages, highlighting predictive biomarkers for personalized oncology.", "keywords": "Single-Cell RNA Sequencing, Cancer Immunotherapy, Tumor Microenvironment, T-Cell Exhaustion, Oncology", "cluster_id": 1, "color": "#E63946", "x2d": -0.1246, "y2d": -0.3894, "x3d": -0.1246, "y3d": -0.3894, "z3d": -0.5395}, {"id": 5, "filename": "Climate_01_Perovskite_Solar_Cells.pdf", "title": "Advancements in Perovskite Solar Cells: Power", "authors": "Michael Gratzel, Henry Snaith, Nam-Gyu Park", "journal": "Nature Energy & Renewable Materials (2024)", "category": "Climate / Renewable Energy", "abstract": "Perovskite solar cells have emerged as leading photovoltaic technologies due to rapid improvements in power conversion efficiency. We investigate compositional engineering of organic-inorganic halide perovskites and novel electron transport layers. Under continuous solar irradiation and thermal stress, passivated tandem cells demonstrate high stability and 28.5 percent certified conversion efficiency.", "keywords": "Renewable Energy, Perovskite Solar Cells, Photovoltaics, Power Conversion Efficiency, Clean Energy", "cluster_id": 3, "color": "#F4A261", "x2d": -0.2037, "y2d": -0.326, "x3d": -0.2037, "y3d": -0.326, "z3d": 0.5024}, {"id": 6, "filename": "Climate_02_Ocean_Circulation_Carbon_Capture.pdf", "title": "Anthropogenic Carbon Sequestration and Deep Ocean", "authors": "Stefan Rahmstorf, Corinne Le Qu r , Peter Tans", "journal": "Nature Climate Change & Oceanographic Science (2024)", "category": "Climate / Renewable Energy", "abstract": "Marine ecosystems and thermohaline circulation play a crucial role in absorbing anthropogenic carbon dioxide emissions from the atmosphere. Using coupled ocean-atmosphere general circulation models, we evaluate deep ocean carbon uptake and ocean acidification trajectories. The slowdown of the Atlantic Meridional Overturning Circulation significantly impairs global oceanic carbon sequestration capacity.", "keywords": "Climate Change, Carbon Sequestration, Ocean Acidification, Greenhouse Gas Emissions, Global Warming", "cluster_id": 3, "color": "#F4A261", "x2d": -0.1636, "y2d": -0.2348, "x3d": -0.1636, "y3d": -0.2348, "z3d": 0.5923}, {"id": 7, "filename": "FinTech_01_Automated_Market_Makers.pdf", "title": "Decentralized Finance: Constant Product Automated", "authors": "Vitalik Buterin, Hayden Adams, Robert Leshner", "journal": "Review of Financial Studies & Decentralized Ledger Technologies (2024)", "category": "Blockchain / FinTech", "abstract": "Decentralized finance (DeFi) platforms rely heavily on automated market makers (AMMs) governed by deterministic mathematical invariants such as x * y = k. We model liquidity provider returns, impermanent loss, and arbitrage dynamics across Ethereum decentralized exchanges. Our empirical findings reveal structural trade-offs between capital efficiency and price slippage in volatile cryptocurrency asset markets.", "keywords": "Blockchain, Decentralized Finance, Automated Market Maker, Liquidity Pools, Smart Contracts", "cluster_id": 2, "color": "#2A9D8F", "x2d": 0.6735, "y2d": -0.0162, "x3d": 0.6735, "y3d": -0.0162, "z3d": 0.0203}, {"id": 8, "filename": "FinTech_02_Proof_of_Stake_Consensus.pdf", "title": "Security and Scalability Analysis of Proof-of-Stake", "authors": "Silvio Micali, Gavin Wood, Emin G n Sirer", "journal": "ACM Transactions on Computer Systems & Cryptography (2024)", "category": "Blockchain / FinTech", "abstract": "Proof-of-Stake (PoS) protocols offer energy-efficient alternatives to Proof-of-Work mining in distributed ledgers. This study analyzes validator staking incentives, slashing penalties for equivocation, and finality gadgets in modern blockchain architectures. Through stochastic game-theoretic modeling, we assess resistance against 51 percent attacks and long-range forks in decentralized networks.", "keywords": "Blockchain, Proof-of-Stake, Distributed Ledger, Consensus Mechanism, Cryptographic Protocols", "cluster_id": 2, "color": "#2A9D8F", "x2d": 0.1624, "y2d": 0.0859, "x3d": 0.1624, "y3d": 0.0859, "z3d": 0.0551}, {"id": 9, "filename": "FinTech_03_Algorithmic_High_Frequency_Trading.pdf", "title": "Limit Order Book Dynamics and Machine Learning in", "authors": "Marcus Lopez, Sarah Jenkins, David Campbell", "journal": "Journal of Financial Econometrics and Market Microstructure (2024)", "category": "Blockchain / FinTech", "abstract": "High-frequency trading firms utilize millisecond limit order book data to predict short-term price fluctuations. We develop microstructural alpha signals using order flow imbalance and volume-weighted average price (VWAP) execution models. Backtesting on global equity and cryptocurrency exchanges demonstrates statistically significant Sharpe ratios under realistic latency and exchange transaction fees.", "keywords": "High-Frequency Trading, Limit Order Book, Algorithmic Trading, Financial Markets, Quantitative Finance", "cluster_id": 2, "color": "#2A9D8F", "x2d": 0.6131, "y2d": 0.1003, "x3d": 0.6131, "y3d": 0.1003, "z3d": -0.0416}];
+    const clusters = [{"id": 0, "color": "#4361EE", "category": "AI / Deep Learning", "count": 3, "keywords": ["learning", "language", "neural", "networks", "neural networks"]}, {"id": 1, "color": "#E63946", "category": "Biomedical / Genomics", "count": 2, "keywords": ["tumor", "crispr-cas9", "rna", "sequencing", "single-cell"]}, {"id": 2, "color": "#2A9D8F", "category": "Blockchain / FinTech", "count": 3, "keywords": ["decentralized", "blockchain", "market", "finance", "price"]}, {"id": 3, "color": "#F4A261", "category": "Climate / Renewable Energy", "count": 2, "keywords": ["carbon", "solar", "emissions", "ocean", "conversion"]}];
+    const simMatrix = [[1.0, 0.146, 0.093, 0.011, 0.016, 0.037, 0.027, 0.015, 0.042, 0.062], [0.146, 1.0, 0.049, 0.015, 0.006, 0.025, 0.024, 0.012, 0.044, 0.023], [0.093, 0.049, 1.0, 0.046, 0.015, 0.021, 0.048, 0.016, 0.028, 0.063], [0.011, 0.015, 0.046, 1.0, 0.078, 0.053, 0.012, 0.022, 0.006, 0.008], [0.016, 0.006, 0.015, 0.078, 1.0, 0.013, 0.005, 0.016, 0.015, 0.029], [0.037, 0.025, 0.021, 0.053, 0.013, 1.0, 0.118, 0.035, 0.043, 0.016], [0.027, 0.024, 0.048, 0.012, 0.005, 0.118, 1.0, 0.031, 0.016, 0.034], [0.015, 0.012, 0.016, 0.022, 0.016, 0.035, 0.031, 1.0, 0.096, 0.254], [0.042, 0.044, 0.028, 0.006, 0.015, 0.043, 0.016, 0.096, 1.0, 0.05], [0.062, 0.023, 0.063, 0.008, 0.029, 0.016, 0.034, 0.254, 0.05, 1.0]];
+
+    let currentDim = '2d';
+    const canvas = document.getElementById('clusterCanvas');
+    const ctx = canvas.getContext('2d');
+    const tooltip = document.getElementById('tooltip');
+    const container = document.getElementById('canvas-container');
+
+    // 3D 뷰 회전 각도
+    let rotX = 0.35;
+    let rotY = 0.45;
+    let isDragging = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    function resizeCanvas() {
+      canvas.width = container.clientWidth * window.devicePixelRatio;
+      canvas.height = container.clientHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      draw();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function switchDim(dim) {
+      currentDim = dim;
+      document.getElementById('btn-2d').classList.toggle('active', dim === '2d');
+      document.getElementById('btn-3d').classList.toggle('active', dim === '3d');
+      document.getElementById('control-hint').textContent = dim === '3d' ? '3D 모드: 마우스 드래그로 360도 회전' : '2D 모드: 평면 PCA 투영';
+      draw();
+    }
+
+    // 렌더링 루프
+    function draw() {
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      ctx.clearRect(0, 0, width, height);
+
+      if (currentDim === '2d') {
+        draw2D(width, height);
+      } else {
+        draw3D(width, height);
+      }
+    }
+
+    function draw2D(w, h) {
+      // 2D 스케일 계산
+      const xs = papers.map(p => p.x2d);
+      const ys = papers.map(p => p.y2d);
+      const minX = Math.min(...xs), maxX = Math.max(...xs);
+      const minY = Math.min(...ys), maxY = Math.max(...ys);
+      const padX = (maxX - minX) * 0.18 || 0.1;
+      const padY = (maxY - minY) * 0.18 || 0.1;
+
+      function toScreen(x, y) {
+        const sx = ((x - (minX - padX)) / ((maxX + padX) - (minX - padX))) * (w - 120) + 60;
+        const sy = (1 - (y - (minY - padY)) / ((maxY + padY) - (minY - padY))) * (h - 100) + 50;
+        return [sx, sy];
+      }
+
+      // 중심선 가이드
+      ctx.strokeStyle = '#1E293B';
+      ctx.lineWidth = 1;
+      const [midX, midY] = toScreen(0, 0);
+      ctx.beginPath();
+      ctx.moveTo(0, midY); ctx.lineTo(w, midY);
+      ctx.moveTo(midX, 0); ctx.lineTo(midX, h);
+      ctx.stroke();
+
+      // 포인트 그리기
+      papers.forEach(p => {
+        const [px, py] = toScreen(p.x2d, p.y2d);
+        p._screenX = px;
+        p._screenY = py;
+
+        // 원형 포인트
+        ctx.beginPath();
+        ctx.arc(px, py, 9, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.stroke();
+
+        // 텍스트 라벨
+        ctx.font = '11px sans-serif';
+        ctx.fillStyle = '#CBD5E1';
+        ctx.fillText(p.title.length > 20 ? p.title.substring(0, 20) + '...' : p.title, px + 12, py + 4);
+      });
+    }
+
+    function draw3D(w, h) {
+      const cx = w / 2;
+      const cy = h / 2;
+      const scale = Math.min(w, h) * 0.42;
+
+      // 3D 회전 행렬 적용
+      const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+      const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+
+      // 좌표 변환 및 정렬
+      const projected = papers.map(p => {
+        // Y축 회전
+        let x1 = p.x3d * cosY + p.z3d * sinY;
+        let y1 = p.y3d;
+        let z1 = -p.x3d * sinY + p.z3d * cosY;
+
+        // X축 회전
+        let x2 = x1;
+        let y2 = y1 * cosX - z1 * sinX;
+        let z2 = y1 * sinX + z1 * cosX;
+
+        const fov = 3.5;
+        const depth = fov / (fov + z2);
+        const px = cx + x2 * scale * depth;
+        const py = cy - y2 * scale * depth;
+
+        return { paper: p, px, py, z2, depth };
+      });
+
+      // 뒤에서 앞으로 정렬
+      projected.sort((a, b) => b.z2 - a.z2);
+
+      // 박스 가이드라인
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(cx - scale * 0.8, cy - scale * 0.8, scale * 1.6, scale * 1.6);
+
+      projected.forEach(item => {
+        const p = item.paper;
+        p._screenX = item.px;
+        p._screenY = item.py;
+
+        const radius = Math.max(5, 9 * item.depth);
+        ctx.beginPath();
+        ctx.arc(item.px, item.py, radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.stroke();
+
+        ctx.font = '10px sans-serif';
+        ctx.fillStyle = '#94A3B8';
+        ctx.fillText(p.filename.split('_')[0], item.px + 10, item.py + 3);
+      });
+    }
+
+    // 마우스 인터랙션 (호버 툴팁)
+    container.addEventListener('mousemove', e => {
+      const rect = container.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      if (isDragging && currentDim === '3d') {
+        const dx = mouseX - lastMouseX;
+        const dy = mouseY - lastMouseY;
+        rotY += dx * 0.01;
+        rotX += dy * 0.01;
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+        draw();
+        return;
+      }
+
+      // 호버 대상 감지
+      let hovered = null;
+      for (let p of papers) {
+        if (p._screenX !== undefined && p._screenY !== undefined) {
+          const dist = Math.hypot(p._screenX - mouseX, p._screenY - mouseY);
+          if (dist < 14) {
+            hovered = p;
+            break;
+          }
+        }
+      }
+
+      if (hovered) {
+        tooltip.style.display = 'block';
+        tooltip.style.left = (mouseX + 15) + 'px';
+        tooltip.style.top = (mouseY + 15) + 'px';
+        tooltip.innerHTML = `
+          <div class="tooltip-title">${hovered.title}</div>
+          <div style="color: var(--text-muted); margin-bottom: 6px;">
+            클러스터: <b>Cluster ${hovered.cluster_id}</b> (${hovered.category})<br>
+            파일: ${hovered.filename}
+          </div>
+          <div style="font-size: 11px; line-height: 1.4; color: #E2E8F0;">
+            ${hovered.abstract.substring(0, 160)}...
+          </div>
+        `;
+      } else {
+        tooltip.style.display = 'none';
+      }
+    });
+
+    container.addEventListener('mousedown', e => {
+      isDragging = true;
+      const rect = container.getBoundingClientRect();
+      lastMouseX = e.clientX - rect.left;
+      lastMouseY = e.clientY - rect.top;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    // 사이드 패널 채우기
+    const sidePanel = document.getElementById('side-panel');
+    clusters.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'cluster-card';
+      const cPapers = papers.filter(p => p.cluster_id === c.id);
+
+      card.innerHTML = `
+        <div class="cluster-badge" style="background: ${c.color}">
+          Cluster ${c.id}: ${c.category} (${c.count}편)
+        </div>
+        <div style="margin-bottom: 10px;">
+          ${c.keywords.map(kw => `<span class="kw-tag">#${kw}</span>`).join('')}
+        </div>
+        <div>
+          ${cPapers.map(p => `
+            <div class="paper-list-item" onclick="focusPaper(${p.id})">
+              <div class="paper-item-title">📄 ${p.title}</div>
+              <div class="paper-item-meta">저자: ${p.authors || '정보 없음'}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      sidePanel.appendChild(card);
+    });
+
+    function focusPaper(id) {
+      const p = papers.find(x => x.id === id);
+      if (!p) return;
+      alert(`[논문 정보]\n제목: ${p.title}\n분류: Cluster ${p.cluster_id} (${p.category})\n파일명: ${p.filename}\n키워드: ${p.keywords}\n\n초록(Abstract):\n${p.abstract}`);
+    }
+
+    setTimeout(resizeCanvas, 50);
+  </script>
+</body>
+</html>
