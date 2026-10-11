@@ -1,0 +1,3 @@
+# 실행 산출물 (원본 응답·차트). 보고서 원본은 Notion 에 있다.
+runs/*
+!runs/.gitkeep
