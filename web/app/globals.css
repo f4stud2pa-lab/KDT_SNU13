@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", "Noto Sans KR",
+    "Segoe UI", sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  word-break: keep-all;
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6;
+  }
+  .input {
+    @apply block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100 disabled:text-slate-500;
+  }
+  .btn-primary {
+    @apply rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50;
+  }
+}
+
+.markdown {
+  @apply text-[0.95rem] leading-7;
+}
+.markdown h1 {
+  @apply mb-4 mt-2 text-2xl font-bold;
+}
+.markdown h2 {
+  @apply mt-10 mb-3 scroll-mt-4 border-b border-slate-200 pb-2 text-xl font-bold;
+}
+.markdown h3 {
+  @apply mt-6 mb-2 text-lg font-semibold;
+}
+.markdown h4 {
+  @apply mt-4 mb-2 font-semibold;
+}
+.markdown h5,
+.markdown h6 {
+  @apply mt-3 mb-1 text-sm font-semibold;
+}
+.markdown p {
+  @apply my-2;
+}
+.markdown ul {
+  @apply my-2 list-disc pl-6;
+}
+.markdown ol {
+  @apply my-2 list-decimal pl-6;
+}
+.markdown li {
+  @apply my-0.5;
+}
+.markdown a {
+  @apply break-all text-blue-600 underline;
+}
+.markdown blockquote {
+  @apply my-3 border-l-4 border-slate-300 pl-3 text-slate-600;
+}
+.markdown pre {
+  @apply my-3 overflow-x-auto rounded-md bg-slate-900 p-3 text-xs leading-5 text-slate-100;
+}
+.markdown :not(pre) > code {
+  @apply rounded bg-slate-100 px-1 py-px text-[0.85em];
+}
+.markdown .table-wrap {
+  @apply my-3 overflow-x-auto;
+}
+.markdown table {
+  @apply w-full border-collapse text-sm;
+}
+.markdown th {
+  @apply border border-slate-300 bg-slate-100 px-2 py-1.5 text-left font-semibold align-top;
+}
+.markdown td {
+  @apply border border-slate-200 px-2 py-1.5 align-top;
+}
+.markdown hr {
+  @apply my-6 border-slate-200;
+}
