@@ -1,0 +1,364 @@
+{
+  "store": {
+    "name": "카페 소담 (Cafe Sodam)",
+    "currency": "원"
+  },
+  "categories": {
+    "coffee": "커피",
+    "non_coffee": "논커피 라떼",
+    "tea": "티",
+    "ade_smoothie": "에이드 & 스무디",
+    "dessert": "디저트",
+    "bakery": "베이커리 & 브런치"
+  },
+  "options": {
+    "size": {
+      "name": "사이즈",
+      "type": "single",
+      "choices": {
+        "tall":   {"name": "Tall(톨)",      "aliases": ["작은 사이즈", "스몰", "small", "S"],              "ml": 355, "price": 0},
+        "grande": {"name": "Grande(그란데)", "aliases": ["중간 사이즈", "중 사이즈", "미디엄", "레귤러", "M"], "ml": 473, "price": 500},
+        "venti":  {"name": "Venti(벤티)",    "aliases": ["큰 사이즈", "라지", "large", "L"],               "ml": 591, "price": 1000}
+      }
+    },
+    "temperature": {
+      "name": "온도",
+      "type": "single",
+      "choices": {
+        "hot": {"name": "HOT(따뜻하게)", "price": 0},
+        "ice": {"name": "ICE(차갑게)",   "price": 0}
+      }
+    },
+    "extra_shot": {
+      "name": "에스프레소 샷 추가",
+      "type": "count",
+      "max": 3,
+      "price": 500,
+      "description": "샷 1회 추가 시 카페인 약 75mg 증가, 커피 맛이 더 진해집니다."
+    },
+    "syrup": {
+      "name": "시럽 추가",
+      "type": "multi",
+      "choices": {
+        "vanilla":  {"name": "바닐라 시럽",   "price": 500},
+        "hazelnut": {"name": "헤이즐넛 시럽", "price": 500},
+        "caramel":  {"name": "카라멜 시럽",   "price": 500}
+      },
+      "description": "시럽 1종당 1펌프 추가, 여러 종류를 함께 선택할 수 있습니다."
+    },
+    "milk": {
+      "name": "우유 변경",
+      "type": "single",
+      "choices": {
+        "regular": {"name": "일반 우유",   "price": 0},
+        "lowfat":  {"name": "저지방 우유", "price": 0},
+        "soy":     {"name": "두유",       "price": 500},
+        "oat":     {"name": "오트밀크",    "price": 600}
+      },
+      "description": "유당불내증이 있거나 우유 알레르기가 있다면 두유 또는 오트밀크로 변경할 수 있습니다."
+    },
+    "whipped_cream": {
+      "name": "휘핑크림",
+      "type": "single",
+      "choices": {
+        "normal": {"name": "기본",       "price": 0},
+        "none":   {"name": "휘핑 빼기",   "price": 0},
+        "extra":  {"name": "휘핑 추가",   "price": 500}
+      }
+    },
+    "decaf": {
+      "name": "디카페인 변경",
+      "type": "bool",
+      "price": 300,
+      "description": "디카페인 원두로 변경 시 카페인이 약 97% 제거됩니다(샷당 약 3mg)."
+    },
+    "sweetness": {
+      "name": "당도 조절",
+      "type": "single",
+      "choices": {
+        "less":   {"name": "덜 달게", "price": 0},
+        "normal": {"name": "기본",   "price": 0},
+        "more":   {"name": "더 달게", "price": 0}
+      }
+    },
+    "ice_amount": {
+      "name": "얼음 양",
+      "type": "single",
+      "choices": {
+        "less":   {"name": "얼음 적게", "price": 0},
+        "normal": {"name": "기본",     "price": 0},
+        "more":   {"name": "얼음 많이", "price": 0}
+      },
+      "applies_to": "ICE 음료에만 적용"
+    },
+    "warm_up": {
+      "name": "데우기",
+      "type": "bool",
+      "price": 0,
+      "description": "베이커리 메뉴를 따뜻하게 데워드립니다."
+    }
+  },
+  "items": [
+    {
+      "id": "americano", "name": "아메리카노", "en": "Americano", "category": "coffee", "aliases": ["아아", "뜨아", "아메"],
+      "description": "에스프레소 2샷에 물을 더한 기본 블랙 커피. 우유 없이 원두 본연의 고소하고 쌉싸름한 맛을 즐길 수 있습니다.",
+      "base_price": 4500, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["extra_shot", "syrup", "decaf", "ice_amount"],
+      "profile": {"coffee_intensity": 4, "sweetness": 1, "caffeine_mg": 150, "kcal": 10},
+      "intensity_note": "우유가 들어가지 않아 에스프레소의 쓴맛과 향이 그대로 느껴집니다. 카푸치노·라떼보다 커피 맛이 진하게 느껴집니다.",
+      "allergens": [], "tags": ["진한", "깔끔한", "저칼로리", "다이어트", "스테디셀러"],
+      "pairings": ["butter_croissant", "cheesecake", "tiramisu"], "available": true
+    },
+    {
+      "id": "espresso", "name": "에스프레소", "en": "Espresso", "category": "coffee", "aliases": [],
+      "description": "고압으로 추출한 진한 커피 원액(더블샷, 60ml). 단일 사이즈, HOT 전용입니다.",
+      "base_price": 3500, "sizes": [], "temperatures": ["hot"],
+      "options": ["extra_shot", "decaf"],
+      "profile": {"coffee_intensity": 5, "sweetness": 1, "caffeine_mg": 150, "kcal": 5},
+      "intensity_note": "매장에서 가장 진한 커피입니다.",
+      "allergens": [], "tags": ["가장 진한", "진한", "저칼로리"],
+      "pairings": ["tiramisu", "macaron_set"], "available": true
+    },
+    {
+      "id": "cafe_latte", "name": "카페라떼", "en": "Caffe Latte", "category": "coffee", "aliases": ["라떼", "카페 라테"],
+      "description": "에스프레소 2샷에 스팀 우유를 듬뿍 넣어 고소하고 부드러운 커피.",
+      "base_price": 5000, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["extra_shot", "syrup", "milk", "decaf", "ice_amount"],
+      "profile": {"coffee_intensity": 2, "sweetness": 2, "caffeine_mg": 150, "kcal": 180},
+      "intensity_note": "우유 비율이 높아 부드럽고 연한 커피 맛입니다.",
+      "allergens": ["우유"], "tags": ["부드러운", "고소한", "스테디셀러"],
+      "pairings": ["blueberry_muffin", "butter_croissant"], "available": true
+    },
+    {
+      "id": "cappuccino", "name": "카푸치노", "en": "Cappuccino", "category": "coffee", "aliases": [],
+      "description": "에스프레소 2샷에 스팀 우유와 풍성한 우유 거품을 올린 커피. 시나몬 파우더를 원하시면 무료로 뿌려드립니다. HOT 전용입니다.",
+      "base_price": 5000, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot"],
+      "options": ["extra_shot", "syrup", "milk", "decaf"],
+      "profile": {"coffee_intensity": 3, "sweetness": 2, "caffeine_mg": 150, "kcal": 120},
+      "intensity_note": "라떼보다 우유가 적어 커피 맛이 조금 더 진하지만, 우유 거품 때문에 아메리카노보다는 부드럽게 느껴집니다.",
+      "allergens": ["우유"], "tags": ["부드러운", "고소한", "우유거품"],
+      "pairings": ["butter_croissant", "tiramisu"], "available": true
+    },
+    {
+      "id": "vanilla_latte", "name": "바닐라라떼", "en": "Vanilla Latte", "category": "coffee", "aliases": ["바닐라 라떼"],
+      "description": "카페라떼에 달콤한 바닐라 시럽을 더한 인기 메뉴.",
+      "base_price": 5500, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["extra_shot", "syrup", "milk", "decaf", "sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 2, "sweetness": 4, "caffeine_mg": 150, "kcal": 240},
+      "intensity_note": "커피 맛보다 달콤함이 앞서는 음료입니다.",
+      "allergens": ["우유"], "tags": ["달콤한", "부드러운", "인기"],
+      "pairings": ["cheesecake", "butter_croissant"], "available": true
+    },
+    {
+      "id": "caramel_macchiato", "name": "카라멜 마키아또", "en": "Caramel Macchiato", "category": "coffee", "aliases": ["카라멜마끼아또", "캬라멜 마키아토"],
+      "description": "바닐라 시럽과 우유 위에 에스프레소를 붓고 카라멜 드리즐을 듬뿍 올린 달콤한 커피.",
+      "base_price": 5800, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["extra_shot", "syrup", "milk", "decaf", "sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 2, "sweetness": 5, "caffeine_mg": 150, "kcal": 260},
+      "intensity_note": "매장 커피 중 가장 달콤한 편입니다.",
+      "allergens": ["우유"], "tags": ["달콤한", "카라멜", "인기"],
+      "pairings": ["choco_brownie", "honey_bread"], "available": true
+    },
+    {
+      "id": "cafe_mocha", "name": "카페모카", "en": "Caffe Mocha", "category": "coffee", "aliases": ["모카"],
+      "description": "에스프레소와 진한 초콜릿 소스, 우유에 휘핑크림을 올린 달콤쌉싸름한 커피.",
+      "base_price": 5800, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["extra_shot", "syrup", "milk", "decaf", "whipped_cream", "sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 3, "sweetness": 4, "caffeine_mg": 160, "kcal": 330},
+      "intensity_note": "초콜릿이 커피의 쓴맛을 감싸 달콤쌉싸름합니다.",
+      "allergens": ["우유", "대두"], "tags": ["달콤한", "초콜릿", "휘핑크림"],
+      "pairings": ["cheesecake"], "available": true
+    },
+    {
+      "id": "cold_brew", "name": "콜드브루", "en": "Cold Brew", "category": "coffee", "aliases": ["더치커피", "콜드 브루"],
+      "description": "찬물로 12시간 동안 천천히 추출해 산미가 적고 깔끔하며 묵직한 커피. ICE 전용입니다.",
+      "base_price": 5000, "sizes": ["tall", "grande", "venti"], "temperatures": ["ice"],
+      "options": ["extra_shot", "syrup", "ice_amount"],
+      "profile": {"coffee_intensity": 5, "sweetness": 1, "caffeine_mg": 200, "kcal": 5},
+      "intensity_note": "아메리카노보다 바디감이 묵직하고 카페인이 더 많습니다.",
+      "allergens": [], "tags": ["진한", "깔끔한", "고카페인", "저칼로리"],
+      "pairings": ["ham_cheese_sandwich", "cheesecake"], "available": true
+    },
+    {
+      "id": "einspanner", "name": "아인슈페너", "en": "Einspänner", "category": "coffee", "aliases": ["비엔나커피", "아인슈패너"],
+      "description": "진한 아메리카노 위에 달콤한 수제 크림을 두툼하게 올린 커피. 크림과 커피를 섞지 않고 마시는 것을 추천합니다.",
+      "base_price": 6000, "sizes": ["tall", "grande"], "temperatures": ["hot", "ice"],
+      "options": ["extra_shot", "decaf", "ice_amount"],
+      "profile": {"coffee_intensity": 4, "sweetness": 3, "caffeine_mg": 150, "kcal": 210},
+      "intensity_note": "커피는 진하고 크림은 달콤해 대비가 뚜렷합니다.",
+      "allergens": ["우유"], "tags": ["진한", "달콤한", "크림", "시그니처"],
+      "pairings": ["choco_brownie"], "available": true
+    },
+    {
+      "id": "choco_latte", "name": "초콜릿 라떼", "en": "Chocolate Latte", "category": "non_coffee", "aliases": ["핫초코", "초코라떼", "아이스초코"],
+      "description": "벨기에산 다크 초콜릿을 녹여 만든 진하고 달콤한 초콜릿 음료. 아이들에게 인기 있는 메뉴입니다.",
+      "base_price": 5500, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["milk", "whipped_cream", "sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 5, "caffeine_mg": 10, "kcal": 350},
+      "allergens": ["우유", "대두"], "tags": ["달콤한", "초콜릿", "논카페인에 가까움", "어린이"],
+      "pairings": ["choco_brownie", "macaron_set"], "available": true
+    },
+    {
+      "id": "matcha_latte", "name": "말차 라떼", "en": "Matcha Latte", "category": "non_coffee", "aliases": ["녹차라떼", "그린티 라떼"],
+      "description": "제주산 유기농 말차와 우유를 섞어 쌉싸름하면서도 고소한 라떼.",
+      "base_price": 5800, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["milk", "syrup", "sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 3, "caffeine_mg": 60, "kcal": 230},
+      "allergens": ["우유"], "tags": ["고소한", "쌉싸름한", "녹차"],
+      "pairings": ["cheesecake", "macaron_set"], "available": true
+    },
+    {
+      "id": "sweet_potato_latte", "name": "고구마 라떼", "en": "Sweet Potato Latte", "category": "non_coffee", "aliases": ["고구마라떼"],
+      "description": "국산 호박고구마를 직접 쪄서 갈아 만든 든든하고 달콤한 라떼. 카페인이 없습니다.",
+      "base_price": 5800, "sizes": ["tall", "grande", "venti"], "temperatures": ["hot", "ice"],
+      "options": ["milk", "whipped_cream", "sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 4, "caffeine_mg": 0, "kcal": 310},
+      "allergens": ["우유"], "tags": ["달콤한", "고소한", "디카페인", "든든한", "어린이"],
+      "pairings": ["butter_croissant"], "available": true
+    },
+    {
+      "id": "strawberry_latte", "name": "생딸기 라떼", "en": "Fresh Strawberry Latte", "category": "non_coffee", "aliases": ["딸기라떼", "딸기 라떼"],
+      "description": "생딸기를 직접 갈아 만든 딸기청과 우유가 어우러진 상큼달콤한 시즌 음료. ICE 전용입니다.",
+      "base_price": 6300, "sizes": ["tall", "grande"], "temperatures": ["ice"],
+      "options": ["milk", "sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 5, "caffeine_mg": 0, "kcal": 290},
+      "allergens": ["우유"], "tags": ["달콤한", "상큼한", "과일", "디카페인", "어린이", "시즌"],
+      "pairings": ["cheesecake", "macaron_set"], "available": true
+    },
+    {
+      "id": "chamomile", "name": "캐모마일 티", "en": "Chamomile Tea", "category": "tea", "aliases": ["캐모마일"],
+      "description": "사과 향이 은은한 캐모마일 꽃차. 카페인이 없어 저녁에도 부담 없이 마실 수 있습니다.",
+      "base_price": 4800, "sizes": ["tall", "grande"], "temperatures": ["hot", "ice"],
+      "options": ["syrup", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 1, "caffeine_mg": 0, "kcal": 0},
+      "allergens": [], "tags": ["디카페인", "은은한", "저칼로리", "릴렉스"],
+      "pairings": ["blueberry_muffin", "macaron_set"], "available": true
+    },
+    {
+      "id": "earl_grey", "name": "얼그레이 티", "en": "Earl Grey Tea", "category": "tea", "aliases": ["얼그레이"],
+      "description": "베르가못 향이 향긋한 홍차. 깔끔하고 향긋한 차를 좋아하는 분께 추천합니다.",
+      "base_price": 4800, "sizes": ["tall", "grande"], "temperatures": ["hot", "ice"],
+      "options": ["syrup", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 1, "caffeine_mg": 40, "kcal": 0},
+      "allergens": [], "tags": ["향긋한", "깔끔한", "저칼로리"],
+      "pairings": ["macaron_set", "cheesecake"], "available": true
+    },
+    {
+      "id": "yuja_tea", "name": "유자차", "en": "Citron Tea", "category": "tea", "aliases": ["유자 티"],
+      "description": "고흥산 유자청으로 만든 새콤달콤한 전통차. 비타민 C가 풍부합니다.",
+      "base_price": 5300, "sizes": ["tall", "grande"], "temperatures": ["hot", "ice"],
+      "options": ["sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 4, "caffeine_mg": 0, "kcal": 160},
+      "allergens": [], "tags": ["달콤한", "상큼한", "디카페인", "감기"],
+      "pairings": ["honey_bread"], "available": true
+    },
+    {
+      "id": "lemon_ade", "name": "레몬에이드", "en": "Lemonade", "category": "ade_smoothie", "aliases": ["레모네이드", "레몬 에이드"],
+      "description": "생레몬즙과 탄산수로 만든 톡 쏘는 상큼한 에이드. ICE 전용입니다.",
+      "base_price": 5800, "sizes": ["tall", "grande", "venti"], "temperatures": ["ice"],
+      "options": ["sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 3, "caffeine_mg": 0, "kcal": 150},
+      "allergens": [], "tags": ["상큼한", "청량한", "탄산", "디카페인", "여름"],
+      "pairings": ["ham_cheese_sandwich"], "available": true
+    },
+    {
+      "id": "grapefruit_ade", "name": "자몽에이드", "en": "Grapefruit Ade", "category": "ade_smoothie", "aliases": ["자몽 에이드"],
+      "description": "생자몽 과육이 씹히는 쌉싸름하고 상큼한 에이드. ICE 전용입니다.",
+      "base_price": 5800, "sizes": ["tall", "grande", "venti"], "temperatures": ["ice"],
+      "options": ["sweetness", "ice_amount"],
+      "profile": {"coffee_intensity": 0, "sweetness": 3, "caffeine_mg": 0, "kcal": 160},
+      "allergens": [], "tags": ["상큼한", "청량한", "탄산", "디카페인", "여름"],
+      "pairings": ["ham_cheese_sandwich"], "available": true
+    },
+    {
+      "id": "mango_smoothie", "name": "망고 스무디", "en": "Mango Smoothie", "category": "ade_smoothie", "aliases": ["망고스무디"],
+      "description": "100% 망고 퓨레를 얼음과 함께 갈아 만든 진하고 달콤한 스무디. ICE 전용입니다.",
+      "base_price": 6500, "sizes": ["tall", "grande"], "temperatures": ["ice"],
+      "options": ["sweetness"],
+      "profile": {"coffee_intensity": 0, "sweetness": 4, "caffeine_mg": 0, "kcal": 280},
+      "allergens": [], "tags": ["달콤한", "과일", "디카페인", "어린이", "여름"],
+      "pairings": ["honey_bread"], "available": true
+    },
+    {
+      "id": "strawberry_yogurt_smoothie", "name": "딸기 요거트 스무디", "en": "Strawberry Yogurt Smoothie", "category": "ade_smoothie", "aliases": ["딸기 스무디", "요거트 스무디"],
+      "description": "생딸기와 플레인 요거트를 갈아 만든 새콤달콤한 스무디. ICE 전용입니다.",
+      "base_price": 6800, "sizes": ["tall", "grande"], "temperatures": ["ice"],
+      "options": ["sweetness"],
+      "profile": {"coffee_intensity": 0, "sweetness": 4, "caffeine_mg": 0, "kcal": 300},
+      "allergens": ["우유"], "tags": ["달콤한", "상큼한", "과일", "디카페인"],
+      "pairings": ["blueberry_muffin"], "available": false, "unavailable_reason": "오늘 딸기 요거트 재료가 모두 소진되어 품절입니다."
+    },
+    {
+      "id": "cheesecake", "name": "뉴욕 치즈케이크", "en": "New York Cheesecake", "category": "dessert", "aliases": ["치즈케이크", "치즈 케익"],
+      "description": "크림치즈를 듬뿍 넣어 꾸덕하고 진한 정통 뉴욕식 치즈케이크(1조각).",
+      "base_price": 6500, "sizes": [], "temperatures": [],
+      "options": [],
+      "profile": {"sweetness": 3, "kcal": 420},
+      "allergens": ["우유", "계란", "밀"], "tags": ["꾸덕한", "치즈", "인기"],
+      "pairings": ["americano", "cold_brew"], "available": true
+    },
+    {
+      "id": "tiramisu", "name": "티라미수", "en": "Tiramisu", "category": "dessert", "aliases": ["티라미스"],
+      "description": "에스프레소에 적신 레이디핑거와 마스카포네 크림을 층층이 쌓은 이탈리아 디저트. 커피가 들어가 소량의 카페인이 있습니다.",
+      "base_price": 6800, "sizes": [], "temperatures": [],
+      "options": [],
+      "profile": {"sweetness": 3, "kcal": 390, "caffeine_mg": 20},
+      "allergens": ["우유", "계란", "밀"], "tags": ["커피향", "부드러운", "시그니처"],
+      "pairings": ["americano", "espresso"], "available": true
+    },
+    {
+      "id": "choco_brownie", "name": "초코 브라우니", "en": "Chocolate Brownie", "category": "dessert", "aliases": ["브라우니"],
+      "description": "다크 초콜릿과 호두를 넣어 꾸덕하게 구운 브라우니.",
+      "base_price": 4500, "sizes": [], "temperatures": [],
+      "options": ["warm_up"],
+      "profile": {"sweetness": 5, "kcal": 380},
+      "allergens": ["우유", "계란", "밀", "호두", "대두"], "tags": ["달콤한", "초콜릿", "꾸덕한"],
+      "pairings": ["americano", "einspanner"], "available": true
+    },
+    {
+      "id": "macaron_set", "name": "마카롱 3종 세트", "en": "Macaron Set", "category": "dessert", "aliases": ["마카롱"],
+      "description": "바닐라·라즈베리·피스타치오 마카롱 3개 세트.",
+      "base_price": 7500, "sizes": [], "temperatures": [],
+      "options": [],
+      "profile": {"sweetness": 5, "kcal": 270},
+      "allergens": ["계란", "아몬드", "피스타치오", "우유"], "tags": ["달콤한", "선물", "알록달록"],
+      "pairings": ["espresso", "earl_grey"], "available": true
+    },
+    {
+      "id": "butter_croissant", "name": "버터 크루아상", "en": "Butter Croissant", "category": "bakery", "aliases": ["크루아상", "크로와상"],
+      "description": "프랑스산 고메 버터로 매일 아침 구워내는 겹겹이 바삭한 크루아상. 데우기 가능합니다.",
+      "base_price": 4000, "sizes": [], "temperatures": [],
+      "options": ["warm_up"],
+      "profile": {"sweetness": 1, "kcal": 300},
+      "allergens": ["우유", "밀", "계란"], "tags": ["담백한", "고소한", "아침"],
+      "pairings": ["americano", "cafe_latte"], "available": true
+    },
+    {
+      "id": "blueberry_muffin", "name": "블루베리 머핀", "en": "Blueberry Muffin", "category": "bakery", "aliases": ["머핀"],
+      "description": "블루베리를 아낌없이 넣어 촉촉하게 구운 머핀. 데우기 가능합니다.",
+      "base_price": 4200, "sizes": [], "temperatures": [],
+      "options": ["warm_up"],
+      "profile": {"sweetness": 3, "kcal": 360},
+      "allergens": ["우유", "밀", "계란"], "tags": ["촉촉한", "과일"],
+      "pairings": ["cafe_latte", "chamomile"], "available": true
+    },
+    {
+      "id": "ham_cheese_sandwich", "name": "햄치즈 샌드위치", "en": "Ham & Cheese Sandwich", "category": "bakery", "aliases": ["샌드위치", "햄 치즈 샌드위치"],
+      "description": "통밀 식빵에 햄, 체다치즈, 양상추, 토마토를 넣은 든든한 샌드위치. 데우기 가능합니다.",
+      "base_price": 6900, "sizes": [], "temperatures": [],
+      "options": ["warm_up"],
+      "profile": {"sweetness": 1, "kcal": 450},
+      "allergens": ["우유", "밀", "돼지고기", "토마토", "대두"], "tags": ["든든한", "식사대용", "아침"],
+      "pairings": ["americano", "cold_brew", "lemon_ade"], "available": true
+    },
+    {
+      "id": "honey_bread", "name": "허니브레드", "en": "Honey Bread", "category": "bakery", "aliases": ["허니 브레드", "허브"],
+      "description": "버터를 발라 구운 두툼한 식빵에 꿀과 휘핑크림, 시나몬을 올린 디저트(2~3인 추천).",
+      "base_price": 7500, "sizes": [], "temperatures": [],
+      "options": ["whipped_cream"],
+      "profile": {"sweetness": 5, "kcal": 820},
+      "allergens": ["우유", "밀", "계란"], "tags": ["달콤한", "나눠먹기", "휘핑크림"],
+      "pairings": ["americano", "yuja_tea"], "available": true
+    }
+  ]
+}
